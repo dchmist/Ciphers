@@ -15,11 +15,9 @@ void func_Caesar(){
     for_each(myStr.begin(),myStr.end(), [&data](char x){data.push_back(static_cast<uint8_t>(x));});
     CaesarCipher::Caesar CeasarObj;
     CeasarObj.encrypt(data);
-    //print
     std::cout<<"After encryption\n";
     for_each(data.begin(),data.end(), [](uint8_t x){std::cout<<x<<" ";});
     CeasarObj.decrypt(data);
-    //print
     std::cout<<"\nAfter decryption\n";
     for_each(data.begin(),data.end(), [](uint8_t x){std::cout<<x<<" ";});
 }
