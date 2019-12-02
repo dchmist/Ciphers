@@ -3,10 +3,10 @@
 #include "Caesar.h"
 #include "RSADecryptor.h"
 #include "RSAEncryptor.h"
+#include "DESCoder.h"
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <deque>
 
 
 void func_Caesar(){
@@ -35,10 +35,12 @@ void func_RSA(){
     for_each(data.begin(), data.end(), [](long int x){std::cout<<static_cast<char>(x);});
     std::cout<<std::endl;
 }
-
+void func_DES(){
+    DES::DESCoder desObj;
+}
 int main(int argc, char *argv[]){
     
-    func_RSA();
+    func_DES();
     
     return 0;
 }
