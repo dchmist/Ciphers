@@ -23,14 +23,29 @@ namespace DES{
         std::vector<int> tmp = shift_once(a_vec);
         return shift_once(&tmp);
     }
-    std::array<std::vector<int>, 16> DESCoder::generate_keys(const std::vector<int> *C0, const std::vector<int> *D0){
+    void DESCoder::generate_keys(const std::vector<byte> *a_key){
+        std::vector<int> keyBits;
+        for(int i = 0; i<8;++i){    // cast a key to bits
+            std::bitset<8> singleBitValueOfKey(a_key->at(i));
+            for(int j = 7; j>=0;--j){
+                keyBits.push_back(singleBitValueOfKey[j]);
+            }
+        }
+        std::vector<int> afterPC1;
+        afterPC1.reserve(56);
+        for (int i=0; i<56;++i)     // permutation pc1
+            afterPC1.push_back(keyBits[_PC1[i]-1]);
+        
+        std::vector<int> C0,D0;
+        C0.insert(C0.end(), afterPC1.begin(), afterPC1.begin()+28);
+        D0.insert(D0.end(), afterPC1.begin()+28, afterPC1.end());
+        
         std::array<std::vector<int>, 17> C;
         std::array<std::vector<int>, 17> D;
-        std::array<std::vector<int>, 16> K; // round keys
         std::vector<int> tmp;
         tmp.reserve(57);
-        C[0].insert(C[0].begin(), C0->begin(), C0->end());
-        D[0].insert(D[0].begin(), D0->begin(), D0->end());
+        C[0].insert(C[0].begin(), C0.begin(), C0.end());
+        D[0].insert(D[0].begin(), D0.begin(), D0.end());
         for(int i=1; i<=16; i++){ 
             if(i == 1 || i == 2 || i==9 || i==16 ){ // for this round shift once
                 C.at(i) = shift_once(&C.at(i-1)); 
@@ -45,37 +60,34 @@ namespace DES{
             tmp.insert(tmp.end(), D.at(i).begin(), D.at(i).end());
 
             for(int j=0;j<48;++j){
-                K.at(i-1).push_back( tmp.at(_PC2[j]-1) );
+                _roundKeys.at(i-1).push_back( tmp.at(_PC2[j]-1) );
             }
             tmp.clear();
         }
-        for(int i=0;i<16;++i){
-            for(auto it : K.at(i))
-                std::cout<< it ;
-        }
-        return K;
     }
-    std::vector<byte> func(std::vector<byte> *a_key, std::vector<byte> *a_data){
-        std::array<std::vector<int>, 16> K;
-        std::vector<int> keyBits;
-        // cast a key to bits
-        for(int i = 0; i<8;++i){
-            std::bitset<8> singleBitValueOfKey(a_key->at(i));
-            for(int j = 7; j>=0;--j){
-                keyBits.push_back(singleBitValueOfKey[j]);
+    void DESCoder::add_padding(std::vector<byte> *a_data){
+        int modulo = a_data->size()%8;
+        if(modulo == 0){
+            for(int i=0;i<8;++i){
+                a_data->push_back(static_cast<byte>(8));
+            }
+        }else{
+            for(int i=0;i<modulo;++i){
+                a_data->push_back(static_cast<byte>(modulo));
             }
         }
-        std::vector<int> afterPC1;
-        afterPC1.reserve(56);
-        for (int i=0; i<56;++i)     // permutation pc1
-            afterPC1.push_back(keyBits[_PC1[i]-1]);
+    }
+    void DESCoder::delete_padding(std::vector<byte> *a_data){
+        int modulo = a_data->back();
+        for(int i=0;i<modulo;++i){
+            a_data->pop_back();
+        }
+    }
+    std::vector<byte> DESCoder::encrypt(std::vector<byte> *a_key, std::vector<byte> *a_data){
+        generate_keys(a_key);
         
-        std::vector<int> C0,D0;
-        C0.insert(C0.end(), afterPC1.begin(), afterPC1.begin()+28);
-        D0.insert(D0.end(), afterPC1.begin()+28, afterPC1.end());
-
-        K = generate_keys(&C0, &D0);        // generate a round keys 
-
+        add_padding(a_data);
+        
         std::vector<byte> cipher;
 
         return cipher;
