@@ -1,30 +1,30 @@
 #ifndef DESCODER_H
 #define DESCODER_H
 
-#include <vector>
-#include <map>
 #include "Types.h"
+#include <iostream>
+#include <vector>
+#include <array>
+#include <bitset>
+#include <algorithm>
+
 
 namespace DES{
 
+    typedef unsigned char byte;
     class DESCoder {
     public:
         DESCoder();
         DESCoder(const DESCoder& orig);
         virtual ~DESCoder();
         
-        void setKey(std::vector<int> a_key);
-        void setKey(std::vector<uint8_t> a_key);
-        
-        uint32_t encrypt(std::vector<int> &a_data);
-        uint32_t decrypt(std::vector<int> a_data);
+        std::vector<byte> encrypt(std::vector<byte> *a_key, std::vector<byte> *a_data);
         
     private:
         std::vector<int> xorVector(std::vector<int> vec1, std::vector<int> vec2);
-        void generateRoundKeys(std::vector<int>);
-        std::vector<int> shift_once(std::vector<int> a_halfOfKey);
-        std::vector<int> shift_twice(std::vector<int> a_halfOfKey);
-        std::map<int, std::vector<int>> _roundKeys;
+        std::array<std::vector<int>, 16> generate_keys(const std::vector<int> *C0, const std::vector<int> *D0);
+        std::vector<int> shift_once(std::vector<int> *a_vec);
+        std::vector<int> shift_twice(std::vector<int> *a_vec);
         std::vector<int> _key;
         
         //tables

@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <memory>
 
 
 void func_Caesar(){
@@ -37,6 +38,13 @@ void func_RSA(){
 }
 void func_DES(){
     DES::DESCoder desObj;
+    std::vector<int> data(20,15);
+    std::vector<uint8_t> key = {0x13, 0x34, 0x57, 0x79, 0x9B, 0xBC, 0xDF, 0xF1};
+    desObj.encrypt(&key);
+
+    std::cout<<"Wynik\n";
+    for_each(data.begin(), data.end(), [](int x){std::cout<<x<<" ";});
+    std::cout<<std::endl;
 }
 int main(int argc, char *argv[]){
     
