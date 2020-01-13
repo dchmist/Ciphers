@@ -20,13 +20,15 @@ namespace DES{
         virtual ~DESCoder();
         
         std::vector<byte> encrypt(std::shared_ptr< std::vector<byte> > a_key, std::shared_ptr< std::vector<byte> > a_data);
-        
+        std::vector<byte> decrypt(std::shared_ptr< std::vector<byte> > a_key, std::shared_ptr< std::vector<byte> > a_data);
     private:
+        void reverse_RoundKeys(); // necessary to decryption
+        std::vector<byte> des(std::shared_ptr< std::vector<byte> > a_key, std::shared_ptr< std::vector<byte> > a_data);
         std::vector<int> XOR_tables(std::vector<int> a_A, std::vector<int> a_B, int size=32);
         std::vector<int> magic_function(std::vector<int> a_bitBlock, int a_key_number);
         std::vector<block> split_message_into_blocks(const std::shared_ptr< std::vector<byte> > a_data);
         void add_padding(std::shared_ptr< std::vector<byte> > a_data);
-        void delete_padding(std::shared_ptr< std::vector<byte> > a_data);
+        void delete_padding(std::vector<byte> &a_data);
         std::vector<int> xorVector(std::vector<int> vec1, std::vector<int> vec2);
         void generate_keys(const std::shared_ptr< std::vector<byte> > a_key);
         std::vector<int> shift_once(std::vector<int> &a_vec);

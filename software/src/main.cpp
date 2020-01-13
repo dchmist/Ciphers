@@ -43,13 +43,24 @@ void func_DES(){
     data->reserve(8);
     for(int i=0; i<16; i+=2){
         data->push_back((i<<4)|(i+1));
+        data->push_back((i<<4)|(i+1));
     }
+    std::cout<<"Initial\n";
+    for_each(data->begin(), data->end(), [](uint8_t x){std::cout<<std::hex<<(int)x<<" ";});
+    std::cout<<std::endl;
     std::shared_ptr< std::vector<uint8_t> > key = std::make_shared< std::vector<uint8_t> >();
     key->assign({0x13, 0x34, 0x57, 0x79, 0x9B, 0xBC, 0xDF, 0xF1});
     std::vector<uint8_t> cipher = desObj.encrypt(key, data);
 
-    std::cout<<"Wynik\n";
-    for_each(cipher.begin(), cipher.end(), [](uint8_t x){std::cout<<(int)x<<" ";});
+    std::cout<<"Encrypted\n";
+    for_each(cipher.begin(), cipher.end(), [](uint8_t x){std::cout<<std::hex<<(int)x<<" ";});
+    std::cout<<std::endl;
+    data->clear();
+    data->insert(data->begin(), cipher.begin(), cipher.end());
+    std::vector<uint8_t> cipher2 = desObj.decrypt(key, data);
+    
+    std::cout<<"Decrypted\n";
+    for_each(cipher2.begin(), cipher2.end(), [](uint8_t x){std::cout<<std::hex<<(int)x<<" ";});
     std::cout<<std::endl;
 }
 int main(int argc, char *argv[]){

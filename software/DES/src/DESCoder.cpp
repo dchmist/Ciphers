@@ -82,10 +82,13 @@ namespace DES{
             }
         }
     }
-    void DESCoder::delete_padding(std::shared_ptr< std::vector<byte> > a_data){
-        int modulo = a_data->back();
+    void DESCoder::delete_padding(std::vector<byte> &a_data){
+        int modulo = a_data.back();
+        if(modulo>8){
+            return;
+        }
         for(int i=0;i<modulo;++i){
-            a_data->pop_back();
+            a_data.pop_back();
         }
     }
     std::vector<block> DESCoder::split_message_into_blocks(std::shared_ptr< std::vector<byte> > a_data){
@@ -196,11 +199,13 @@ namespace DES{
         return permutedSBoxResult;
     }
 
-    std::vector<byte> DESCoder::encrypt(const std::shared_ptr< std::vector<byte> > a_key, const std::shared_ptr< std::vector<byte> > a_data){
+
+    std::vector<byte> DESCoder::des(const std::shared_ptr< std::vector<byte> > a_key, const std::shared_ptr< std::vector<byte> > a_data)
+    {
         generate_keys(a_key);
-//        add_padding(a_data);
         std::vector<byte> cipher;
         std::vector<block> messageBlocks = split_message_into_blocks(a_data);
+        
         std::vector<block> encryptedBlocks;
         encryptedBlocks.reserve(messageBlocks.size());
         block singleBlock;
@@ -238,9 +243,6 @@ namespace DES{
                 for(int j=0;j<8;++j){
                     bits.set(7-j,it.at(i*8+j));
                 }
-                std::cout<<"Dodaje:\n";
-                std::cout<<"Bit: \t"<< std::dec<<bits << std::endl;
-                std::cout<<"Long: \t"<< std::hex<<bits.to_ulong() << std::endl;
                 cipher.push_back(static_cast<byte>(bits.to_ulong()));
                 bits.reset();
             }
@@ -248,5 +250,18 @@ namespace DES{
         
         return cipher;
     }
-
+    void DESCoder::reverse_RoundKeys(){
+        std::reverse(_roundKeys.begin(),_roundKeys.end());
+    }
+    std::vector<byte> DESCoder::decrypt(std::shared_ptr< std::vector<byte> > a_key, std::shared_ptr< std::vector<byte> > a_data){
+        reverse_RoundKeys();
+        std::vector<byte> result = des(a_key, a_data);
+        delete_padding(result);
+        return result;
+    }
+        std::vector<byte> DESCoder::encrypt(const std::shared_ptr< std::vector<byte> > a_key, const std::shared_ptr< std::vector<byte> > a_data){
+        add_padding(a_data);
+        return des(a_key, a_data);
+    }
+    
 }//DES
