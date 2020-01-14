@@ -3,6 +3,7 @@
 #include "DESCoder.h"
 
 const int BLOCK_SIZE = 64;
+#define PACKAGE_SIZE 100
 
 namespace DES{
     DESCoder::DESCoder() {
@@ -38,7 +39,7 @@ namespace DES{
         std::vector<int> tmp = shift_once(a_vec);
         return shift_once(tmp);
     }
-    void DESCoder::generate_keys(const std::shared_ptr< std::vector<byte> > a_key) {
+    void DESCoder::generate_keys(const std::shared_ptr< byteVec > a_key) {
         std::vector<int> keyBits = _convertToBits(a_key);
         std::vector<int> afterPC1;
         afterPC1.reserve(56);
@@ -70,19 +71,14 @@ namespace DES{
             tmp.clear();
         }
     }
-    void DESCoder::add_padding(std::shared_ptr< std::vector<byte> > a_data){
+    void DESCoder::add_padding(std::shared_ptr< byteVec > a_data){
         int modulo = a_data->size()%8;
-        if(modulo == 0){
-            for(int i=0; i<8; ++i){
-                a_data->push_back( static_cast<byte>(8) );
-            }
-        }else{
-            for(int i=0;i<modulo;++i){
-                a_data->push_back( static_cast<byte>(modulo) );
-            }
+        for(int i=modulo;i<8;++i){
+            a_data->push_back( static_cast<byte>(8-modulo) );
+
         }
     }
-    void DESCoder::delete_padding(std::vector<byte> &a_data){
+    void DESCoder::delete_padding(byteVec &a_data){
         int modulo = a_data.back();
         if(modulo>8){
             return;
@@ -91,7 +87,7 @@ namespace DES{
             a_data.pop_back();
         }
     }
-    std::vector<block> DESCoder::split_message_into_blocks(std::shared_ptr< std::vector<byte> > a_data){
+    std::vector<block> DESCoder::split_message_into_blocks(std::shared_ptr< byteVec > a_data){
         
         std::vector<int> tmp = _convertToBits(a_data);
         std::vector<block> messageBlocks;
@@ -104,7 +100,7 @@ namespace DES{
         }
         return messageBlocks;
     }
-        std::vector<int> DESCoder::XOR_tables(std::vector<int> a_A, std::vector<int> a_B, int size){
+    std::vector<int> DESCoder::XOR_tables(std::vector<int> a_A, std::vector<int> a_B, int size){
         std::vector<int> result;
         result.reserve(size);    
         for(int i=0; i<size; ++i)
@@ -198,12 +194,9 @@ namespace DES{
         SBoxResultBits.shrink_to_fit();
         return permutedSBoxResult;
     }
-
-
-    std::vector<byte> DESCoder::des(const std::shared_ptr< std::vector<byte> > a_key, const std::shared_ptr< std::vector<byte> > a_data)
-    {
+    byteVec DESCoder::des(const std::shared_ptr< byteVec > a_key, const std::shared_ptr< byteVec > a_data){
         generate_keys(a_key);
-        std::vector<byte> cipher;
+        byteVec cipher;
         std::vector<block> messageBlocks = split_message_into_blocks(a_data);
         
         std::vector<block> encryptedBlocks;
@@ -253,14 +246,21 @@ namespace DES{
     void DESCoder::reverse_RoundKeys(){
         std::reverse(_roundKeys.begin(),_roundKeys.end());
     }
-    std::vector<byte> DESCoder::decrypt(std::shared_ptr< std::vector<byte> > a_key, std::shared_ptr< std::vector<byte> > a_data){
+    byteVec DESCoder::decrypt(std::shared_ptr< byteVec > a_key, std::shared_ptr< byteVec > a_data){
         reverse_RoundKeys();
-        std::vector<byte> result = des(a_key, a_data);
+//        int sizeOfData = a_data->size();
+        int amountOfPackages = a_data->size() / PACKAGE_SIZE;
+        ++amountOfPackages;     // rest of divide
+        for(int i=0; i<amountOfPackages; ++i){
+            // TODO : Threads
+        }
+        byteVec result = des(a_key, a_data);
         delete_padding(result);
         return result;
     }
-        std::vector<byte> DESCoder::encrypt(const std::shared_ptr< std::vector<byte> > a_key, const std::shared_ptr< std::vector<byte> > a_data){
+        byteVec DESCoder::encrypt(const std::shared_ptr< byteVec > a_key, const std::shared_ptr< byteVec > a_data){
         add_padding(a_data);
+        
         return des(a_key, a_data);
     }
     

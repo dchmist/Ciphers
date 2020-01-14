@@ -40,11 +40,13 @@ void func_RSA(){
 void func_DES(){
     DES::DESCoder desObj;
     std::shared_ptr< std::vector<uint8_t> > data = std::make_shared< std::vector<uint8_t> >();
-    data->reserve(8);
-    for(int i=0; i<16; i+=2){
-        data->push_back((i<<4)|(i+1));
-        data->push_back((i<<4)|(i+1));
-    }
+    data->reserve(150);
+//    for(int i=0; i<16; i+=2){
+//        data->push_back((i<<4)|(i+1));
+//        data->push_back((i<<4)|(i+1));
+//    }
+    for(int i=0;i<150;++i)
+        data->push_back(i%16);
     std::cout<<"Initial\n";
     for_each(data->begin(), data->end(), [](uint8_t x){std::cout<<std::hex<<(int)x<<" ";});
     std::cout<<std::endl;
@@ -55,9 +57,9 @@ void func_DES(){
     std::cout<<"Encrypted\n";
     for_each(cipher.begin(), cipher.end(), [](uint8_t x){std::cout<<std::hex<<(int)x<<" ";});
     std::cout<<std::endl;
-    data->clear();
-    data->insert(data->begin(), cipher.begin(), cipher.end());
-    std::vector<uint8_t> cipher2 = desObj.decrypt(key, data);
+    std::shared_ptr< std::vector<uint8_t> > data2 = std::make_shared< std::vector<uint8_t> >();
+    data2->insert(data2->begin(), cipher.begin(), cipher.end());
+    std::vector<uint8_t> cipher2 = desObj.decrypt(key, data2);
     
     std::cout<<"Decrypted\n";
     for_each(cipher2.begin(), cipher2.end(), [](uint8_t x){std::cout<<std::hex<<(int)x<<" ";});
