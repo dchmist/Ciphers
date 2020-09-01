@@ -1,7 +1,7 @@
 #ifndef ABSTRACT_ENCRYPTION_H
 #define ABSTRACT_ENCRYPTION_H
 
-#include <cstdint>
+#include <inttypes.h>
 #include <vector>
 
 class AbstractEncryption{
