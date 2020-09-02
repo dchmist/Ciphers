@@ -3,6 +3,10 @@
 
 software/src/CMakeFiles/des.dir/Ciphers/DES/DES.cpp.o: ../software/include/Ciphers/AbstractEncryption.h
 software/src/CMakeFiles/des.dir/Ciphers/DES/DES.cpp.o: ../software/include/Ciphers/DES/DES.h
+software/src/CMakeFiles/des.dir/Ciphers/DES/DES.cpp.o: ../software/include/Ciphers/DES/DESKey.h
 software/src/CMakeFiles/des.dir/Ciphers/DES/DES.cpp.o: ../software/include/Types.h
 software/src/CMakeFiles/des.dir/Ciphers/DES/DES.cpp.o: ../software/src/Ciphers/DES/DES.cpp
+
+software/src/CMakeFiles/des.dir/Ciphers/DES/DESKey.cpp.o: ../software/include/Ciphers/DES/DESKey.h
+software/src/CMakeFiles/des.dir/Ciphers/DES/DESKey.cpp.o: ../software/src/Ciphers/DES/DESKey.cpp
 

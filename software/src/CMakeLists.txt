@@ -6,6 +6,7 @@ add_library(caesar SHARED
 )
 add_library(des SHARED
         Ciphers/DES/DES.cpp
+        Ciphers/DES/DESKey.cpp
 )
 add_executable(Ciphers
 	main.cpp

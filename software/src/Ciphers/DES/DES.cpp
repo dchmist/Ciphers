@@ -4,82 +4,111 @@
 
 using namespace DESCipher;
 
-DES::DES(const std::bitset<10> initKey):
-initialKey(initKey)
+DES::DES(const std::string initKey):
+setOfKeys(initKey)
 {
 }
-void DES::setInitialKey(const std::bitset<10> key)
+void DES::setInitialKey(const std::string key)
 {
-    initialKey = key;
+    setOfKeys.setInitialKey(key);
 }
 std::vector<uint8_t> DES::encode(const std::vector<uint8_t> &buffer) const
 {
-    if(!firstRoundKey.any() || !secondRoundKey.any())
-        generateRoundKeys();
-    return buffer;
+    std::vector<uint8_t> cryptogram(buffer.size());
+    std::transform(buffer.begin(), buffer.end(), cryptogram.begin(), [&](uint8_t singleByte){ 
+        singleByte = initialPermutation(singleByte);
+        singleByte = encode_singleByte(singleByte, keyRound::first);
+        singleByte = cross(singleByte);
+        singleByte = encode_singleByte(singleByte, keyRound::second);
+        singleByte = reversePermutation(singleByte);
+        return singleByte;
+    });
+    return cryptogram;
+}
+uint8_t DES::encode_singleByte(const uint8_t toEncrypt, keyRound) const
+{
+    auto copy = toEncrypt & 0x0F;
+    copy = permutationP4w8(copy);
+    copy ^= static_cast<uint8_t>(setOfKeys.get_firstRoundKey().to_ulong());
+    uint8_t resultSBox = SBox(copy);
+    resultSBox = permutationP4(resultSBox);
+    copy = (toEncrypt & 0xF0) >> 4;
+    copy ^= resultSBox;
+    copy <<= 4;
+    copy |= toEncrypt & 0x0F;
+    return copy;
+}
+uint8_t DES::permutationP4w8(const uint8_t toPerm) const
+{
+    uint8_t result{0x00};
+    result |= ((toPerm >> 3) & 0x01);
+    result |= ((toPerm << 1) & 0x0B);
+    result |= ((toPerm << 3) & 0x70);
+    result |= ((toPerm << 7) & 0x80);
+    return result;
+}
+uint8_t DES::SBox(const uint8_t toSBox) const
+{
+    uint8_t partSBox1 = (toSBox >> 4) & 0x0F;
+    uint8_t partSBox2 = toSBox & 0x0F;
+    uint8_t SBox1[4][4] = {{1, 0, 3, 2}, {3, 2, 1, 0}, {0, 2, 1, 3}, {3, 1, 3, 2}};
+    uint8_t SBox2[4][4] = {{0, 1, 2, 3}, {2, 0, 1, 3}, {3, 0, 1, 0}, {2, 1, 0, 3}};
+    uint8_t row1= (partSBox1>>2 & 0x02) | (partSBox1 & 0x01);
+    uint8_t col1 = (partSBox1>>1) & 0x03;
+    uint8_t row2 = (partSBox2>>2 & 0x02) | (partSBox2 & 0x01);
+    uint8_t col2 = (partSBox2>>1) & 0x03;
+    return (SBox1[row1][col1] << 2) | (SBox2[row2][col2]);
+}
+uint8_t DES::permutationP4(const uint8_t toPerm) const
+{
+    uint8_t result{0x00};
+    result |= ((toPerm >> 7) & 0x01);
+    result |= ((toPerm >> 4) & 0x02);
+    result |= ((toPerm >> 2) & 0x04);
+    result |= ((toPerm >> 3) & 0x08);
+    return result;
 }
 std::vector<uint8_t> DES::decode(const std::vector<uint8_t> &buffer) const
 {
-    return buffer;
+    std::vector<uint8_t> cryptogram(buffer.size());
+    std::transform(buffer.begin(), buffer.end(), cryptogram.begin(), [&](uint8_t singleByte){ 
+        singleByte = initialPermutation(singleByte);
+        singleByte = encode_singleByte(singleByte, keyRound::second);
+        singleByte = cross(singleByte);
+        singleByte = encode_singleByte(singleByte, keyRound::first);
+        singleByte = reversePermutation(singleByte);
+        return singleByte;
+    });
+    return cryptogram;
 }
-void DES::generateRoundKeys() const
+uint8_t DES::initialPermutation(uint8_t toPerm) const
 {
-    if(!initialKey.any()){
-        return;
-        // TODO not inizialized key
-    }
-    auto p10 = permutationP10();
-    auto p10s = p10.to_string();
-    permutationSL1(p10s);
-    p10 = std::bitset<10>{p10s};
-    firstRoundKey = permutationP10w8(p10);
-    secondRoundKey = permutationP10w8( permutationSL2(p10) );
+    uint8_t IP{0x00};
+    IP |= ((toPerm >> 1) & 0x09);
+    IP |= ((toPerm >> 2) & 0x02);
+    IP |= ((toPerm << 2) & 0x04);
+    IP |= ((toPerm >> 3) & 0x10);
+    IP |= toPerm & 0x20;
+    IP |= ((toPerm << 4) & 0x40);
+    IP |= ((toPerm << 1) & 0x80);
+    return IP;
 }
-std::bitset<10> DES::permutationP10() const
+uint8_t DES::cross(uint8_t toCross) const
 {
-    std::bitset<10> p10;
-    p10.set(0, initialKey[4]);
-    p10.set(1, initialKey[2]);
-    p10.set(2, initialKey[1]);
-    p10.set(3, initialKey[9]);
-    p10.set(4, initialKey[0]);
-    p10.set(5, initialKey[6]);
-    p10.set(6, initialKey[3]);
-    p10.set(7, initialKey[8]);
-    p10.set(8, initialKey[5]);
-    p10.set(9, initialKey[7]);
-    return p10;
+    uint8_t crossed{0x00};
+    crossed |= ((toCross << 4) & 0xF0);
+    crossed |= ((toCross >> 4) & 0x0F);
+    return crossed;
 }
-void DES::permutationSL1(std::string &buffer) const
+uint8_t DES::reversePermutation(uint8_t toPerm) const
 {
-    std::rotate(buffer.begin(), buffer.begin()+1, buffer.begin()+4);
-    std::rotate(buffer.begin()+5, buffer.begin()+6, buffer.end());
-}
-std::bitset<8> DES::permutationP10w8(const std::bitset<10> &in) const
-{
-    std::bitset<8> p8;
-    p8.set(0, in[1]);
-    p8.set(1, in[0]);
-    p8.set(2, in[5]);
-    p8.set(3, in[2]);
-    p8.set(4, in[6]);
-    p8.set(5, in[3]);
-    p8.set(6, in[7]);
-    p8.set(7, in[4]);
-    return p8;
-}
-std::bitset<10> DES::permutationSL2(const std::bitset<10> &in) const
-{
-    std::bitset<10> sl2;
-    sl2.set(0, in[3]);
-    sl2.set(1, in[4]);
-    sl2.set(2, in[0]);
-    sl2.set(3, in[1]);
-    sl2.set(4, in[2]);
-    sl2.set(5, in[8]);
-    sl2.set(6, in[9]);
-    sl2.set(7, in[5]);
-    sl2.set(8, in[6]);
-    sl2.set(9, in[7]);
-    return sl2;
+    uint8_t RP{0x00};
+    RP |= ((toPerm >> 2) & 0x01);
+    RP |= ((toPerm << 1) & 0x12);
+    RP |= ((toPerm >> 4) & 0x04);
+    RP |= ((toPerm << 2) & 0x08);
+    RP |= toPerm & 0x20;
+    RP |= ((toPerm >> 1) & 0x40);
+    RP |= ((toPerm << 3) & 0x80);
+    return RP;
 }

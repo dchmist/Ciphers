@@ -7,6 +7,7 @@ software/src/CMakeFiles/Ciphers.dir/DataConverter.cpp.o: ../software/src/DataCon
 software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/include/Ciphers/AbstractEncryption.h
 software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/include/Ciphers/Caesar/Caesar.h
 software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/include/Ciphers/DES/DES.h
+software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/include/Ciphers/DES/DESKey.h
 software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/include/Ciphers/miniAES/MiniAES.h
 software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/include/EncryptionFactory.h
 software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/include/Types.h
@@ -14,6 +15,8 @@ software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o: ../software/src/Enc
 
 software/src/CMakeFiles/Ciphers.dir/main.cpp.o: ../software/include/Ciphers/AbstractEncryption.h
 software/src/CMakeFiles/Ciphers.dir/main.cpp.o: ../software/include/Ciphers/DES/DES.h
+software/src/CMakeFiles/Ciphers.dir/main.cpp.o: ../software/include/Ciphers/DES/DESKey.h
+software/src/CMakeFiles/Ciphers.dir/main.cpp.o: ../software/include/DataConverter.h
 software/src/CMakeFiles/Ciphers.dir/main.cpp.o: ../software/include/Types.h
 software/src/CMakeFiles/Ciphers.dir/main.cpp.o: ../software/src/main.cpp
 

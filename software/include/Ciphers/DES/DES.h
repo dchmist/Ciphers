@@ -3,29 +3,29 @@
 
 #include "Types.h"
 #include "AbstractEncryption.h"
-#include <bitset>
+#include "DES/DESKey.h"
 
 namespace DESCipher{
     class DES : public AbstractEncryption{
     public:
         DES() = default;
-        DES(const std::bitset<10>);
-        void setInitialKey(const std::bitset<10>);
+        DES(const std::string);
+        void setInitialKey(const std::string);
 
         std::vector<uint8_t> encode(const std::vector<uint8_t>&) const override;
         std::vector<uint8_t> decode(const std::vector<uint8_t>&) const override;
 
     private:
-        std::bitset<10> initialKey;
-        mutable std::bitset<8> firstRoundKey;
-        mutable std::bitset<8> secondRoundKey;
+        DESKey setOfKeys;
+        enum class keyRound : bool {first , second};
+        uint8_t encode_singleByte(const uint8_t, keyRound) const;
+        uint8_t permutationP4w8(const uint8_t) const;
+        uint8_t SBox(const uint8_t) const;
+        uint8_t permutationP4(const uint8_t) const;
 
-        void generateRoundKeys() const;
-        std::bitset<10> permutationP10() const;
-        std::bitset<8> permutationP10w8(const std::bitset<10>&) const;
-        void permutationSL1(std::string&) const;
-        std::bitset<10> permutationSL2(const std::bitset<10> &) const;
-
+        uint8_t initialPermutation(uint8_t) const;
+        uint8_t cross(uint8_t) const;
+        uint8_t reversePermutation(uint8_t) const;
     };
 }
 #endif /* DES_CODER_H */

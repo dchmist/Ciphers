@@ -8,6 +8,7 @@ software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o
  ../software/include/Ciphers/AbstractEncryption.h
  ../software/include/Ciphers/Caesar/Caesar.h
  ../software/include/Ciphers/DES/DES.h
+ ../software/include/Ciphers/DES/DESKey.h
  ../software/include/Ciphers/miniAES/MiniAES.h
  ../software/include/EncryptionFactory.h
  ../software/include/Types.h
@@ -15,5 +16,7 @@ software/src/CMakeFiles/Ciphers.dir/EncryptionFactory.cpp.o
 software/src/CMakeFiles/Ciphers.dir/main.cpp.o
  ../software/include/Ciphers/AbstractEncryption.h
  ../software/include/Ciphers/DES/DES.h
+ ../software/include/Ciphers/DES/DESKey.h
+ ../software/include/DataConverter.h
  ../software/include/Types.h
  /home/radmor/Desktop/fun/Ciphers/software/src/main.cpp

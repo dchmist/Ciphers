@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/des.dir/Ciphers/DES/DES.cpp.o"
+  "CMakeFiles/des.dir/Ciphers/DES/DESKey.cpp.o"
   "libdes.pdb"
   "libdes.so"
 )

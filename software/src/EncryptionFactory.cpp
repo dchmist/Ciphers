@@ -19,7 +19,7 @@ const std::unique_ptr<AbstractEncryption> & EncryptorFactory::get_encryptor(encr
         return encryptors.at(type);
     }
     else if(type == encryptionTypes::miniAES){
-        encryptors[encryptionTypes::DES] = std::make_unique<DESCipher::DES>(std::bitset<10>(std::string("0000000000")));
+        encryptors[encryptionTypes::DES] = std::make_unique<DESCipher::DES>(std::string("0000000000"));
         return encryptors.at(type);
     }
     else 

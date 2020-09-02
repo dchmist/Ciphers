@@ -224,6 +224,33 @@ Ciphers/DES/DES.cpp.s:
 	cd /home/radmor/Desktop/fun/Ciphers/build && $(MAKE) -f software/src/CMakeFiles/des.dir/build.make software/src/CMakeFiles/des.dir/Ciphers/DES/DES.cpp.s
 .PHONY : Ciphers/DES/DES.cpp.s
 
+Ciphers/DES/DESKey.o: Ciphers/DES/DESKey.cpp.o
+
+.PHONY : Ciphers/DES/DESKey.o
+
+# target to build an object file
+Ciphers/DES/DESKey.cpp.o:
+	cd /home/radmor/Desktop/fun/Ciphers/build && $(MAKE) -f software/src/CMakeFiles/des.dir/build.make software/src/CMakeFiles/des.dir/Ciphers/DES/DESKey.cpp.o
+.PHONY : Ciphers/DES/DESKey.cpp.o
+
+Ciphers/DES/DESKey.i: Ciphers/DES/DESKey.cpp.i
+
+.PHONY : Ciphers/DES/DESKey.i
+
+# target to preprocess a source file
+Ciphers/DES/DESKey.cpp.i:
+	cd /home/radmor/Desktop/fun/Ciphers/build && $(MAKE) -f software/src/CMakeFiles/des.dir/build.make software/src/CMakeFiles/des.dir/Ciphers/DES/DESKey.cpp.i
+.PHONY : Ciphers/DES/DESKey.cpp.i
+
+Ciphers/DES/DESKey.s: Ciphers/DES/DESKey.cpp.s
+
+.PHONY : Ciphers/DES/DESKey.s
+
+# target to generate assembly for a file
+Ciphers/DES/DESKey.cpp.s:
+	cd /home/radmor/Desktop/fun/Ciphers/build && $(MAKE) -f software/src/CMakeFiles/des.dir/build.make software/src/CMakeFiles/des.dir/Ciphers/DES/DESKey.cpp.s
+.PHONY : Ciphers/DES/DESKey.cpp.s
+
 Ciphers/miniAES/MiniAES.o: Ciphers/miniAES/MiniAES.cpp.o
 
 .PHONY : Ciphers/miniAES/MiniAES.o
@@ -350,6 +377,9 @@ help:
 	@echo "... Ciphers/DES/DES.o"
 	@echo "... Ciphers/DES/DES.i"
 	@echo "... Ciphers/DES/DES.s"
+	@echo "... Ciphers/DES/DESKey.o"
+	@echo "... Ciphers/DES/DESKey.i"
+	@echo "... Ciphers/DES/DESKey.s"
 	@echo "... Ciphers/miniAES/MiniAES.o"
 	@echo "... Ciphers/miniAES/MiniAES.i"
 	@echo "... Ciphers/miniAES/MiniAES.s"
