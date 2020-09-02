@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../software/include/Ciphers/AbstractEncryption.h
+inttypes.h
+-
+vector
+-
+
+../software/include/Ciphers/Caesar/Caesar.h
+AbstractEncryption.h
+../software/include/Ciphers/Caesar/AbstractEncryption.h
+
+../software/include/Types.h
+inttypes.h
+-
+
+/home/radmor/Desktop/fun/Ciphers/software/src/Ciphers/Caesar/Caesar.cpp
+Caesar/Caesar.h
+/home/radmor/Desktop/fun/Ciphers/software/src/Ciphers/Caesar/Caesar/Caesar.h
+Types.h
+/home/radmor/Desktop/fun/Ciphers/software/src/Ciphers/Caesar/Types.h
+iostream
+-
+functional
+-
+algorithm
+-
+iterator
+-
+

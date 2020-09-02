@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -shared -Wl,-soname,libminiAES.so -o libminiAES.so CMakeFiles/miniAES.dir/Ciphers/miniAES/MiniAES.cpp.o 

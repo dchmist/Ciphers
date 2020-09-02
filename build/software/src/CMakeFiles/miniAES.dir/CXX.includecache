@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../software/include/Ciphers/AbstractEncryption.h
+inttypes.h
+-
+vector
+-
+
+../software/include/Ciphers/miniAES/MiniAES.h
+Types.h
+../software/include/Ciphers/miniAES/Types.h
+AbstractEncryption.h
+../software/include/Ciphers/miniAES/AbstractEncryption.h
+
+../software/include/Types.h
+inttypes.h
+-
+
+/home/radmor/Desktop/fun/Ciphers/software/src/Ciphers/miniAES/MiniAES.cpp
+miniAES/MiniAES.h
+/home/radmor/Desktop/fun/Ciphers/software/src/Ciphers/miniAES/miniAES/MiniAES.h
+

@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../software/include/Ciphers/AbstractEncryption.h
+inttypes.h
+-
+vector
+-
+
+../software/include/Ciphers/DES/DES.h
+Types.h
+../software/include/Ciphers/DES/Types.h
+AbstractEncryption.h
+../software/include/Ciphers/DES/AbstractEncryption.h
+bitset
+-
+
+../software/include/Types.h
+inttypes.h
+-
+
+/home/radmor/Desktop/fun/Ciphers/software/src/Ciphers/DES/DES.cpp
+DES/DES.h
+/home/radmor/Desktop/fun/Ciphers/software/src/Ciphers/DES/DES/DES.h
+iostream
+-
+algorithm
+-
+
