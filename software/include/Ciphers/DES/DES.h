@@ -1,7 +1,6 @@
 #ifndef DES_CODER_H
 #define DES_CODER_H
 
-#include "Types.h"
 #include "AbstractEncryption.h"
 #include "DES/DESKey.h"
 
