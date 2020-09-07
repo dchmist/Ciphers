@@ -1,2 +1,2 @@
-/deps/googletest-master/
-/nbproject/
+build
+.vscode
