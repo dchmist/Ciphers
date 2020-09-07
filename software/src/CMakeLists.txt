@@ -1,5 +1,7 @@
 add_library(miniAES SHARED
         Ciphers/miniAES/MiniAES.cpp
+        Ciphers/miniAES/MiniAESKey.cpp
+        Ciphers/miniAES/MiniAESSBoxes.cpp
         Ciphers/miniAES/MultiplierAES.cpp
 )
 add_library(caesar SHARED
