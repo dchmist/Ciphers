@@ -5,6 +5,8 @@
 #include <bitset>
 #include <iostream>
 
+using namespace MiniAESCipher;
+
 uint16_t MultiplierAES::multiply(uint16_t m, uint16_t t)
 {
     

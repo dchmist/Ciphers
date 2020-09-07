@@ -1,6 +1,8 @@
 #include "miniAES/MiniAESKey.h"
 #include "miniAES/MiniAESSBoxes.h"
 
+using namespace MiniAESCipher;
+
 MiniAESKey::MiniAESKey(uint16_t iKey) : initialKey(iKey)
 {
 

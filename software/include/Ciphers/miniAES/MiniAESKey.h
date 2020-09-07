@@ -3,24 +3,23 @@
 
 #include <cstdint>
 
-class MiniAES;
+namespace MiniAESCipher{
+    class MiniAESKey{
+    public:
+        MiniAESKey() = default;
+        MiniAESKey(uint16_t);
 
-class MiniAESKey{
-public:
-    MiniAESKey() = default;
-    MiniAESKey(uint16_t);
+        void set_initialKey(uint16_t);
 
-    void set_initialKey(uint16_t);
-
-    uint16_t get_initialKey();
-    uint16_t get_firstRoundKey();
-    uint16_t get_secondRoundKey();
-private:
-    void calculateFirstRoundKey();
-    void calculateSecondRoundKey();
-    uint16_t initialKey = 0;
-    uint16_t firstRoundKey = 0;
-    uint16_t secondRoundKey = 0;
-};
-
+        uint16_t get_initialKey();
+        uint16_t get_firstRoundKey();
+        uint16_t get_secondRoundKey();
+    private:
+        void calculateFirstRoundKey();
+        void calculateSecondRoundKey();
+        uint16_t initialKey = 0;
+        uint16_t firstRoundKey = 0;
+        uint16_t secondRoundKey = 0;
+    };
+}
 #endif

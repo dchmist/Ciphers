@@ -4,13 +4,15 @@
 #include <cstdint>
 #include <map>
 
-class MiniAESSBoxes{
-public:
-    static uint8_t calculateSBoxE(uint8_t);
-    static uint8_t calculateSBoxD(uint8_t);
-private:
-    static const std::map<uint8_t, uint8_t> SBoxE;
-    static const std::map<uint8_t, uint8_t> SBoxD;
-};
+namespace MiniAESCipher{
+    class MiniAESSBoxes{
+    public:
+        static uint8_t calculateSBoxE(uint8_t);
+        static uint8_t calculateSBoxD(uint8_t);
+    private:
+        static const std::map<uint8_t, uint8_t> SBoxE;
+        static const std::map<uint8_t, uint8_t> SBoxD;
+    };
+}
 
 #endif
