@@ -56,7 +56,9 @@ std::vector<uint8_t> MiniAES::decode(const std::vector<uint8_t> &cipher) const
         plaintext.emplace_back(t & 0xFF);
         t=0;
     }
-    return cipher;
+    if(plaintext.back() == IV)
+        plaintext.pop_back();
+    return plaintext;
 }
 void MiniAES::F_SBox(SBoxType && type, uint16_t &val) const
 {

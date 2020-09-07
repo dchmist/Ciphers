@@ -10,7 +10,7 @@
 void testDES()
 {
     DESCipher::DES obj(std::string("1100000011"));
-    auto plainText = DataConverter::toBytes(std::string{"Test"});
+    auto plainText = DataConverter::toBytes(std::string{"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"});
     std::vector<uint8_t> encoded = obj.encode(plainText);
     std::cout << "Encoded : " << DataConverter::toString(encoded) << std::endl;
     plainText = obj.decode(encoded);
@@ -19,14 +19,17 @@ void testDES()
 void testMultiply()
 {
     using namespace MiniAESCipher;
+
+    // std::cout << "Test : "<< std::bitset<4>(MultiplierAES::specific_multiply_with_two_components(0x02, 0x00)) << std::endl;
+
     uint16_t m = 0b0011001000100011;
     uint16_t t = 0b0011000011110001;
 
     uint16_t kp = 0b1011001011110110;
     uint16_t f = 0b1111000011110000;
 
-    // auto res = MultiplierAES::multiply(m, t);
-    auto res = MultiplierAES::multiply(kp, f);
+    auto res = MultiplierAES::multiply(m, t);
+    // auto res = MultiplierAES::multiply(kp, f);
     std::bitset<16> x(res);
     std::cout << "Wynik : "<< x << std::endl;
 }
@@ -45,19 +48,25 @@ void testKey()
     std::cout << "k1 : "<< x1 << std::endl;
     std::cout << "k2 : "<< x2 << std::endl;
 }
+#include <algorithm>
 void testMiniAES()
 {
     MiniAESCipher::MiniAES obj;
     MiniAESCipher::MiniAESKey key{0b1011001011110110};
     obj.setKey(key);
-    auto plainText = DataConverter::toBytes(std::string{"Test"});
+    auto plainText = DataConverter::toBytes(std::string{"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"});
     std::vector<uint8_t> encoded = obj.encode(plainText);
     std::cout << "Encoded : " << DataConverter::toString(encoded) << std::endl;
     plainText = obj.decode(encoded);
     std::cout << "Wynik : " << DataConverter::toString(plainText) << std::endl;
+    std::cout << "Wynik HEX : ";
+    std::for_each(plainText.begin(), plainText.end(), [](uint8_t x){printf("%02X ",x);});
+    std::cout << std::endl;
 }
 
 int main(int argc, char *argv[]){
-    testMultiply();
+    // testMultiply();
+    testMiniAES();
+    testDES();
     return 0;
 }

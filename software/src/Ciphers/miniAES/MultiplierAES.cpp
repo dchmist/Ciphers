@@ -19,11 +19,6 @@ uint16_t MultiplierAES::multiply(uint16_t m, uint16_t t)
     result.part3 = specific_multiply(dividedM.part3, dividedM.part4, dividedT.part3);
     result.part4 = specific_multiply(dividedM.part3, dividedM.part4, dividedT.part4);
 
-    printf("Result.part1 : %02X\n", result.part1);
-    printf("Result.part2 : %02X\n", result.part2);
-    printf("Result.part3 : %02X\n", result.part3);
-    printf("Result.part4 : %02X\n", result.part4);
-
     uint16_t returnVal = (result.part4 << 12) & 0xF000;
     returnVal |= (result.part3 << 8) & 0x0F00;
     returnVal |= (result.part2 << 4) & 0x00F0;
@@ -42,12 +37,8 @@ MultiplierAES::Four4Bits MultiplierAES::divide(uint16_t x)
 }
 uint8_t MultiplierAES::specific_multiply(uint8_t matrix1_part1, uint8_t matrix1_part2, uint8_t matrix2_part)
 {
-    std::cout << "matrix2_part : " << std::bitset<4>(matrix2_part) << std::endl;
-    std::cout << "matrix1_part1 : " << std::bitset<4>(matrix1_part1) << std::endl;
-    std::cout << "matrix1_part2 : " << std::bitset<4>(matrix1_part2) << std::endl;
     auto ret1 = specific_multiply_with_two_components(matrix1_part1, matrix2_part);
     auto ret2 = specific_multiply_with_two_components(matrix1_part2, matrix2_part);
-    std::cout << "Result : " << std::bitset<4>(ret1) << " ^ " << std::bitset<4>(ret2) << " = " << std::bitset<4>(ret1 ^ ret2) << std::endl << std::endl;
     return  ret1 ^ ret2;
 }
 uint8_t MultiplierAES::specific_multiply_with_two_components(uint8_t part1, uint8_t part2)
