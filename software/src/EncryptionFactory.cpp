@@ -2,6 +2,7 @@
 #include "miniAES/MiniAES.h"
 #include "Caesar/Caesar.h"
 #include "DES/DES.h"
+#include "ReturnTypes/EncryptionException.h"
 
 EncryptorFactory::EncryptorFactory()
 {
@@ -19,9 +20,9 @@ const std::unique_ptr<AbstractEncryption> & EncryptorFactory::get_encryptor(encr
         return encryptors.at(type);
     }
     else if(type == encryptionTypes::DES){
-        encryptors[encryptionTypes::DES] = std::make_unique<DESCipher::DES>(std::string("0000000000"));
+        encryptors[encryptionTypes::DES] = std::make_unique<DESCipher::DES>();
         return encryptors.at(type);
     }
     else 
-        return nullptr; // TODO throw undefined type
+        throw EncryptionException(std::string("Unrecognize ecryptor type"), ERROR_CODE::UNKNOW);
 }

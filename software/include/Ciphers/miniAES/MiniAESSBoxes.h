@@ -14,5 +14,4 @@ namespace MiniAESCipher{
         static const std::map<uint8_t, uint8_t> SBoxD;
     };
 }
-
 #endif

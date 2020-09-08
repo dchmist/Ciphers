@@ -1,14 +1,13 @@
 #include "miniAES/MiniAES.h"
 #include "miniAES/MiniAESSBoxes.h"
 #include "miniAES/MultiplierAES.h"
-#include <bitset>
-#include <iostream>
+#include <memory>
 
 using namespace MiniAESCipher;
 
-void MiniAES::setKey(const MiniAESKey &inKey)
+void MiniAES::setKey(const std::shared_ptr<AbstractKey> &key)
 {
-    key = inKey;
+    this->key = std::dynamic_pointer_cast<MiniAESKey>(key);
 }
 std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &plaintext) const
 {
@@ -19,14 +18,14 @@ std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &plaintext) cons
             t = plaintext.at(i)<<8 | IV;
         else
             t = plaintext.at(i)<<8 | plaintext.at(i+1);
-        t = t ^ key.get_initialKey();
+        t = t ^ key->get_initialKey();
         F_SBox(SBoxType::E, t);
         ZK(t);
-        t = MultiplierAES::multiply(m, t);
-        t = t ^ key.get_firstRoundKey();
+        // t = MultiplierAES::multiply(m, t); // TODO w pewnych przypadkach(np. h,H,V,W) to mnozenie przy dekodowaniu zmienia jeden bajt
+        t = t ^ key->get_firstRoundKey();
         F_SBox(SBoxType::E, t);
         ZK(t);
-        t = t ^ key.get_secondRoundKey();
+        t = t ^ key->get_secondRoundKey();
 
         cipher.emplace_back((t>>8) & 0xFF);
         cipher.emplace_back(t & 0xFF);
@@ -36,25 +35,22 @@ std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &plaintext) cons
 }
 std::vector<uint8_t> MiniAES::decode(const std::vector<uint8_t> &cipher) const
 {
-    uint16_t t{0};
+    uint16_t s{0};
     std::vector<uint8_t> plaintext;
     for(size_t i=0; i<cipher.size(); i+=2){
-        if(i == cipher.size()-1)
-            t = cipher.at(i)<<8 | IV;
-        else
-            t = cipher.at(i)<<8 | cipher.at(i+1);
-        t = t ^ key.get_secondRoundKey();
-        ZK(t);
-        F_SBox(SBoxType::D, t);
-        t = t ^ key.get_firstRoundKey();
-        t = MultiplierAES::multiply(m, t);
-        ZK(t);
-        F_SBox(SBoxType::D, t);
-        t = t ^ key.get_initialKey();
+        s = cipher.at(i)<<8 | cipher.at(i+1);
+        s = s ^ key->get_secondRoundKey();
+        ZK(s);
+        F_SBox(SBoxType::D, s);
+        s = s ^ key->get_firstRoundKey();
+        // s = MultiplierAES::multiply(m, s); // TODO w pewnych przypadkach(np. h,H,V,W) to mnozenie przy dekodowaniu zmienia jeden bajt
+        ZK(s);
+        F_SBox(SBoxType::D, s);
+        s = s ^ key->get_initialKey();
 
-        plaintext.emplace_back((t>>8) & 0xFF);
-        plaintext.emplace_back(t & 0xFF);
-        t=0;
+        plaintext.emplace_back((s>>8) & 0xFF);
+        plaintext.emplace_back(s & 0xFF);
+        s=0;
     }
     if(plaintext.back() == IV)
         plaintext.pop_back();

@@ -4,13 +4,9 @@
 
 using namespace DESCipher;
 
-DES::DES(const std::string initKey):
-setOfKeys(initKey)
+void DES::setKey(const std::shared_ptr<AbstractKey> &key)
 {
-}
-void DES::setInitialKey(const std::string key)
-{
-    setOfKeys.setInitialKey(key);
+    this->key = std::dynamic_pointer_cast<DESKey>(key);
 }
 std::vector<uint8_t> DES::encode(const std::vector<uint8_t> &buffer) const
 {
@@ -25,11 +21,14 @@ std::vector<uint8_t> DES::encode(const std::vector<uint8_t> &buffer) const
     });
     return cryptogram;
 }
-uint8_t DES::encode_singleByte(const uint8_t toEncrypt, keyRound) const
+uint8_t DES::encode_singleByte(const uint8_t toEncrypt, keyRound keyType) const
 {
     auto copy = toEncrypt & 0x0F;
     copy = permutationP4w8(copy);
-    copy ^= static_cast<uint8_t>(setOfKeys.get_firstRoundKey().to_ulong());
+    if(keyType == keyRound::first)
+        copy ^= static_cast<uint8_t>(key->get_firstRoundKey().to_ulong());
+    else
+        copy ^= static_cast<uint8_t>(key->get_secondRoundKey().to_ulong());
     uint8_t resultSBox = SBox(copy);
     resultSBox = permutationP4(resultSBox);
     copy = (toEncrypt & 0xF0) >> 4;

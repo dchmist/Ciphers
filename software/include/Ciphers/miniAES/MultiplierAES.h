@@ -23,5 +23,4 @@ namespace MiniAESCipher{
         static int found_first_positive_bit(uint8_t);
     };
 }
-
 #endif

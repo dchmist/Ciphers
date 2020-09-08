@@ -1,12 +1,11 @@
 #ifndef ENCRYPTOR_FACTORY_H
 #define ENCRYPTOR_FACTORY_H
 
-#include "AbstractEncryption.h"
+#include "Abstractions/AbstractEncryption.h"
 #include <memory>
 #include <map>
 
 enum class encryptionTypes{
-    UNDEFINED,
     Caesar,
     DES,
     miniAES,
@@ -19,5 +18,4 @@ public:
 private:
     std::map< encryptionTypes, std::unique_ptr<AbstractEncryption>> encryptors;
 };
-
 #endif

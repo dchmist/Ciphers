@@ -15,6 +15,7 @@ add_executable(Ciphers
 	main.cpp
         DataConverter.cpp
         EncryptionFactory.cpp
+        ReturnTypes/EncryptionException.cpp
 )
 target_link_libraries(Ciphers
 	miniAES

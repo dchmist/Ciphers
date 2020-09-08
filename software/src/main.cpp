@@ -1,43 +1,33 @@
 #include "DES/DES.h"
 #include "DataConverter.h"
-#include "miniAES/MultiplierAES.h"
+#include "EncryptionFactory.h"
 #include "miniAES/MiniAESKey.h"
 #include "miniAES/MiniAES.h"
 #include <iostream>
 #include <string>
 #include <bitset>
 
-void testDES()
-{
-    DESCipher::DES obj(std::string("1100000011"));
-    auto plainText = DataConverter::toBytes(std::string{"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"});
-    std::vector<uint8_t> encoded = obj.encode(plainText);
-    std::cout << "Encoded : " << DataConverter::toString(encoded) << std::endl;
-    plainText = obj.decode(encoded);
-    std::cout << "Wynik : " << DataConverter::toString(plainText) << std::endl;
-}
-void testMultiply()
-{
-    using namespace MiniAESCipher;
+// void testMultiply()
+// {
+//     using namespace MiniAESCipher;
 
-    // std::cout << "Test : "<< std::bitset<4>(MultiplierAES::specific_multiply_with_two_components(0x02, 0x00)) << std::endl;
+//     uint16_t m = 0b0011001000100011;
+//     uint16_t t = 0b0011000011110001;
 
-    uint16_t m = 0b0011001000100011;
-    uint16_t t = 0b0011000011110001;
-
-    uint16_t kp = 0b1011001011110110;
-    uint16_t f = 0b1111000011110000;
-
-    auto res = MultiplierAES::multiply(m, t);
-    // auto res = MultiplierAES::multiply(kp, f);
-    std::bitset<16> x(res);
-    std::cout << "Wynik : "<< x << std::endl;
-}
+//     auto res = MultiplierAES::multiply(m, t);
+//     uint16_t expectedResult = 0b1000001001000011;
+//     if(res == expectedResult)
+//         std::cout<<"Udalo sie\n";
+//     else{
+//         std::cout << "Result : \t"<< std::bitset<16>(res) << std::endl;
+//         std::cout << "Expected : \t"<< std::bitset<16>(expectedResult) << std::endl;
+//     }
+// }
 void testKey()
 {
     using namespace MiniAESCipher;
     MiniAESKey key;
-    key.set_initialKey(0b1011001011110110);
+    key.setInitialKey(std::string("1011001011110110"));
 
     auto k1 = key.get_firstRoundKey();
     auto k2 = key.get_secondRoundKey();
@@ -48,25 +38,65 @@ void testKey()
     std::cout << "k1 : "<< x1 << std::endl;
     std::cout << "k2 : "<< x2 << std::endl;
 }
+EncryptorFactory factory;
+void testDES()
+{
+    const auto & desCryptor = factory.get_encryptor(encryptionTypes::DES);
+    auto key =std::make_shared<DESCipher::DESKey>();
+    if(key->setInitialKey(std::string("1100000011")) != 0)
+    {
+        std::cout<<"Klucz jest do dupy\n";
+        return;
+    }
+    desCryptor->setKey(key);
+    auto plainText = DataConverter::toBytes(std::string{"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"});
+    std::vector<uint8_t> encoded;
+    try{
+        encoded = desCryptor->encode(plainText);
+    }catch(std::exception &e){
+        std::cout << e.what() << std::endl;
+        return;
+    }
+    std::cout << "Encoded : " << DataConverter::toString(encoded) << std::endl;
+    try{
+        plainText = desCryptor->decode(encoded);
+    }catch(std::exception &e){
+        std::cout << e.what() << std::endl;
+        return;
+    }
+    std::cout << "PlainText : " << DataConverter::toString(plainText) << std::endl;
+}
 #include <algorithm>
 void testMiniAES()
 {
-    MiniAESCipher::MiniAES obj;
-    MiniAESCipher::MiniAESKey key{0b1011001011110110};
-    obj.setKey(key);
+    const auto & aesEncryptor = factory.get_encryptor(encryptionTypes::miniAES);
+    auto key =std::make_shared<MiniAESCipher::MiniAESKey>();
+    if(key->setInitialKey(std::string("1011001011110110")) != 0)
+    {
+        std::cout<<"Klucz AES jest do dupy\n";
+        return;
+    }
+    aesEncryptor->setKey(key);
     auto plainText = DataConverter::toBytes(std::string{"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"});
-    std::vector<uint8_t> encoded = obj.encode(plainText);
+    std::vector<uint8_t> encoded;
+    try{
+        encoded = aesEncryptor->encode(plainText);
+    }catch(std::exception &e){
+        std::cout << e.what() << std::endl;
+        return;
+    }
     std::cout << "Encoded : " << DataConverter::toString(encoded) << std::endl;
-    plainText = obj.decode(encoded);
-    std::cout << "Wynik : " << DataConverter::toString(plainText) << std::endl;
-    std::cout << "Wynik HEX : ";
-    std::for_each(plainText.begin(), plainText.end(), [](uint8_t x){printf("%02X ",x);});
-    std::cout << std::endl;
+    try{
+        plainText = aesEncryptor->decode(encoded);
+    }catch(std::exception &e){
+        std::cout << e.what() << std::endl;
+        return;
+    }
+    std::cout << "PlainText : " << DataConverter::toString(plainText) << std::endl;
 }
 
 int main(int argc, char *argv[]){
-    // testMultiply();
-    testMiniAES();
     testDES();
+    testMiniAES();
     return 0;
 }

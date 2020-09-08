@@ -1,13 +1,19 @@
 #include "DES/DESKey.h"
+#include "ReturnTypes/EncryptionException.h"
 #include <algorithm>
 
-DESKey::DESKey(const std::string key):
-initialKey(std::bitset<10>{key})
+using namespace DESCipher;
+
+int DESKey::setInitialKey(const std::string key)
 {
-}
-void DESKey::setInitialKey(const std::string key)
-{
+    if(key.size() != size_t(10))
+        return (int)ERROR_CODE::INVALID_KEY_LENGTH;
+    auto ptr = std::find_if(key.begin(), key.end(), [](char c){return (c =='0' || c =='1') ? false : true;});
+    if(ptr != key.end())
+        return (int)ERROR_CODE::INVALID_KEY_FORMAT;
     initialKey = std::bitset<10>{key};
+    generateRoundKeys();
+    return (int)ERROR_CODE::SUCCESS;
 }
 std::bitset<8> DESKey::get_firstRoundKey() const
 {
@@ -23,10 +29,8 @@ std::bitset<8> DESKey::get_secondRoundKey() const
 }
 void DESKey::generateRoundKeys() const
 {
-    if(!initialKey.any()){
-        return;
-        // TODO not inizialized key
-    }
+    if(!initialKey.any())
+        throw EncryptionException("The initial DES key is not initialized", ERROR_CODE::KEY_NOT_INITIALIZED);
     auto p10 = permutationP10();
     auto p10s = p10.to_string();
     permutationSL1(p10s);

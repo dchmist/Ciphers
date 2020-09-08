@@ -2,14 +2,11 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-#include <bitset>
-#include <iostream>
 
 using namespace MiniAESCipher;
 
 uint16_t MultiplierAES::multiply(uint16_t m, uint16_t t)
 {
-    
     Four4Bits dividedM = divide(m);
     Four4Bits dividedT = divide(t);
     Four4Bits result;
@@ -19,10 +16,10 @@ uint16_t MultiplierAES::multiply(uint16_t m, uint16_t t)
     result.part3 = specific_multiply(dividedM.part3, dividedM.part4, dividedT.part3);
     result.part4 = specific_multiply(dividedM.part3, dividedM.part4, dividedT.part4);
 
-    uint16_t returnVal = (result.part4 << 12) & 0xF000;
-    returnVal |= (result.part3 << 8) & 0x0F00;
-    returnVal |= (result.part2 << 4) & 0x00F0;
-    returnVal |= result.part1 & 0x000F;
+    uint16_t returnVal = (result.part1 << 12) & 0xF000;
+    returnVal |= (result.part2 << 8) & 0x0F00;
+    returnVal |= (result.part3 << 4) & 0x00F0;
+    returnVal |= result.part4 & 0x000F;
 
     return returnVal;
 }

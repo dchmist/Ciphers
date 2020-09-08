@@ -2,14 +2,14 @@
 #define MINI_AES_KEY_H
 
 #include <cstdint>
+#include "Abstractions/AbstractKey.h"
 
 namespace MiniAESCipher{
-    class MiniAESKey{
+    class MiniAESKey : public AbstractKey{
     public:
         MiniAESKey() = default;
-        MiniAESKey(uint16_t);
 
-        void set_initialKey(uint16_t);
+        int setInitialKey(const std::string) override;
 
         uint16_t get_initialKey();
         uint16_t get_firstRoundKey();
