@@ -11,14 +11,19 @@ add_library(des SHARED
         Ciphers/DES/DES.cpp
         Ciphers/DES/DESKey.cpp
 )
-add_executable(Ciphers
-	main.cpp
+add_library(encryptorFactory SHARED
         DataConverter.cpp
         EncryptionFactory.cpp
         ReturnTypes/EncryptionException.cpp
 )
-target_link_libraries(Ciphers
+target_link_libraries(encryptorFactory
 	miniAES
         caesar
         des
+)
+add_executable(Ciphers
+	main.cpp
+)
+target_link_libraries(Ciphers
+        encryptorFactory
 )
