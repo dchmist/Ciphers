@@ -9,7 +9,7 @@ using namespace MiniAESCipher;
 int MiniAESKey::setInitialKey(const std::string key)
 {
     if(key.size() != size_t{16})
-        return (int)ERROR_CODE::INVALID_KEY;
+        return (int)ERROR_CODE::INVALID_KEY_LENGTH;
     auto ptr = std::find_if(key.begin(), key.end(), [](char c){return (c =='0' || c =='1') ? false : true;});
     if(ptr != key.end())
         return (int)ERROR_CODE::INVALID_KEY_FORMAT;

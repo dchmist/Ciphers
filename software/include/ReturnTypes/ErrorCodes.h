@@ -9,6 +9,7 @@ enum class ERROR_CODE : int{
     INVALID_KEY_FORMAT = -3,
     INVALID_KEY = -3,
     KEY_NOT_INITIALIZED = -4,
-    EMPTY_MESSAGE = -5,
+    EMPTY_BUFFER = -5,
+    INVALID_BUFFER = -6,
 };
 #endif

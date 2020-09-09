@@ -10,17 +10,19 @@ void MiniAES::setKey(const std::shared_ptr<AbstractKey> &key)
 {
     this->key = std::dynamic_pointer_cast<MiniAESKey>(key);
 }
-std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &plaintext) const
+std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &buffer) const
 {
     if(key == nullptr)
-        throw EncryptionException(std::string("AES key is not initialize."), ERROR_CODE::KEY_NOT_INITIALIZED);
+        throw EncryptionException(std::string("AES key is not initialized."), ERROR_CODE::KEY_NOT_INITIALIZED);
+    if(buffer.size() == 0)
+        throw EncryptionException(std::string("Empty buffer"), ERROR_CODE::EMPTY_BUFFER);
     uint16_t t{0};
     std::vector<uint8_t> cipher;
-    for(size_t i=0; i<plaintext.size(); i+=2){
-        if(i == plaintext.size()-1)
-            t = plaintext.at(i)<<8 | IV;
+    for(size_t i=0; i<buffer.size(); i+=2){
+        if(i == buffer.size()-1)
+            t = buffer.at(i)<<8 | IV;
         else
-            t = plaintext.at(i)<<8 | plaintext.at(i+1);
+            t = buffer.at(i)<<8 | buffer.at(i+1);
         t = t ^ key->get_initialKey();
         F_SBox(SBoxType::E, t);
         ZK(t);
@@ -36,14 +38,18 @@ std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &plaintext) cons
     }
     return cipher;
 }
-std::vector<uint8_t> MiniAES::decode(const std::vector<uint8_t> &cipher) const
+std::vector<uint8_t> MiniAES::decode(const std::vector<uint8_t> &buffer) const
 {
     if(key == nullptr)
-        throw EncryptionException(std::string("AES key is not initialize."), ERROR_CODE::KEY_NOT_INITIALIZED);
+        throw EncryptionException(std::string("AES key is not initialized."), ERROR_CODE::KEY_NOT_INITIALIZED);
+    if(buffer.size()%2 != 0)
+        throw EncryptionException(std::string("Cipher is incorrect."), ERROR_CODE::INVALID_BUFFER);
+    if(buffer.size() == 0)
+        throw EncryptionException(std::string("Empty buffer"), ERROR_CODE::EMPTY_BUFFER);
     uint16_t s{0};
     std::vector<uint8_t> plaintext;
-    for(size_t i=0; i<cipher.size(); i+=2){
-        s = cipher.at(i)<<8 | cipher.at(i+1);
+    for(size_t i=0; i<buffer.size(); i+=2){
+        s = buffer.at(i)<<8 | buffer.at(i+1);
         s = s ^ key->get_secondRoundKey();
         ZK(s);
         F_SBox(SBoxType::D, s);
