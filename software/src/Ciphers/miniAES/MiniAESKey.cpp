@@ -20,6 +20,8 @@ int MiniAESKey::setInitialKey(const std::string key)
 }
 uint16_t MiniAESKey::get_initialKey()
 {
+    if(initialKey == 0)
+        throw EncryptionException("The initial AES key is not initialized", ERROR_CODE::KEY_NOT_INITIALIZED);
     return initialKey;
 }
 uint16_t MiniAESKey::get_firstRoundKey()
@@ -36,7 +38,7 @@ uint16_t MiniAESKey::get_secondRoundKey()
 }
 void MiniAESKey::calculateFirstRoundKey()
 {
-    if(!initialKey)
+    if(initialKey == 0)
         throw EncryptionException("The initial AES key is not initialized", ERROR_CODE::KEY_NOT_INITIALIZED);
     firstRoundKey = (((initialKey>>12) & 0x0F) ^ MiniAESSBoxes::calculateSBoxE(initialKey & 0x0F) ^ 0x01) << 12;
     firstRoundKey |= (((initialKey>>4) & 0x0F) ^ ((firstRoundKey>>12) & 0x0F)) << 4;
