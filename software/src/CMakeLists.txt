@@ -6,6 +6,7 @@ add_library(miniAES SHARED
 )
 add_library(caesar SHARED
         Ciphers/Caesar/Caesar.cpp
+        Ciphers/Caesar/CaesarKey.cpp
 )
 add_library(des SHARED
         Ciphers/DES/DES.cpp

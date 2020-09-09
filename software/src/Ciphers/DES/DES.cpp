@@ -1,6 +1,6 @@
 #include "DES/DES.h"
-#include <iostream>
 #include <algorithm>
+#include "ReturnTypes/EncryptionException.h"
 
 using namespace DESCipher;
 
@@ -10,6 +10,8 @@ void DES::setKey(const std::shared_ptr<AbstractKey> &key)
 }
 std::vector<uint8_t> DES::encode(const std::vector<uint8_t> &buffer) const
 {
+    if(key == nullptr)
+        throw EncryptionException(std::string("DES key is not initialize."), ERROR_CODE::KEY_NOT_INITIALIZED);
     std::vector<uint8_t> cryptogram(buffer.size());
     std::transform(buffer.begin(), buffer.end(), cryptogram.begin(), [&](uint8_t singleByte){ 
         singleByte = initialPermutation(singleByte);
@@ -69,6 +71,8 @@ uint8_t DES::permutationP4(const uint8_t toPerm) const
 }
 std::vector<uint8_t> DES::decode(const std::vector<uint8_t> &buffer) const
 {
+    if(key == nullptr)
+        throw EncryptionException(std::string("DES key is not initialize."), ERROR_CODE::KEY_NOT_INITIALIZED);
     std::vector<uint8_t> cryptogram(buffer.size());
     std::transform(buffer.begin(), buffer.end(), cryptogram.begin(), [&](uint8_t singleByte){ 
         singleByte = initialPermutation(singleByte);

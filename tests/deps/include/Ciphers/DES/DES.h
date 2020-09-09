@@ -7,14 +7,13 @@
 namespace DESCipher{
     class DES : public AbstractEncryption{
     public:
-        DES() = default;
         void setKey(const std::shared_ptr<AbstractKey>&) override;
 
         std::vector<uint8_t> encode(const std::vector<uint8_t>&) const override;
         std::vector<uint8_t> decode(const std::vector<uint8_t>&) const override;
 
     private:
-        std::shared_ptr<DESKey> key;
+        std::shared_ptr<DESKey> key = nullptr;
         enum class keyRound : bool {first , second};
         uint8_t encode_singleByte(const uint8_t, keyRound) const;
         uint8_t permutationP4w8(const uint8_t) const;

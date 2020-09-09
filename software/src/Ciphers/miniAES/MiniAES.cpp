@@ -1,6 +1,7 @@
 #include "miniAES/MiniAES.h"
 #include "miniAES/MiniAESSBoxes.h"
 #include "miniAES/MultiplierAES.h"
+#include "ReturnTypes/EncryptionException.h"
 #include <memory>
 
 using namespace MiniAESCipher;
@@ -11,6 +12,8 @@ void MiniAES::setKey(const std::shared_ptr<AbstractKey> &key)
 }
 std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &plaintext) const
 {
+    if(key == nullptr)
+        throw EncryptionException(std::string("AES key is not initialize."), ERROR_CODE::KEY_NOT_INITIALIZED);
     uint16_t t{0};
     std::vector<uint8_t> cipher;
     for(size_t i=0; i<plaintext.size(); i+=2){
@@ -35,6 +38,8 @@ std::vector<uint8_t> MiniAES::encode(const std::vector<uint8_t> &plaintext) cons
 }
 std::vector<uint8_t> MiniAES::decode(const std::vector<uint8_t> &cipher) const
 {
+    if(key == nullptr)
+        throw EncryptionException(std::string("AES key is not initialize."), ERROR_CODE::KEY_NOT_INITIALIZED);
     uint16_t s{0};
     std::vector<uint8_t> plaintext;
     for(size_t i=0; i<cipher.size(); i+=2){
