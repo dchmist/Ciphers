@@ -1,7 +1,7 @@
 #ifndef CAESAR_KEY_H
 #define CAESAR_KEY_H
 
-#include "Abstractions/AbstractKey.h"
+#include "Ciphers/Abstractions/AbstractKey.h"
 
 namespace CaesarCipher{
     class CaesarKey : public AbstractKey{

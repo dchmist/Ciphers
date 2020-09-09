@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "Caesar/Caesar.h"
-#include "Caesar/CaesarKey.h"
+#include "Ciphers/Caesar/Caesar.h"
+#include "Ciphers/Caesar/CaesarKey.h"
 #include "DataConverter.h"
 #include "ReturnTypes/EncryptionException.h"
 #include <algorithm>

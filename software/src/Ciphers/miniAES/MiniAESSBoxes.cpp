@@ -1,4 +1,4 @@
-#include "miniAES/MiniAESSBoxes.h"
+#include "Ciphers/miniAES/MiniAESSBoxes.h"
 
 using namespace MiniAESCipher;
 

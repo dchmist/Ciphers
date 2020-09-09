@@ -1,8 +1,8 @@
 #ifndef DES_CODER_H
 #define DES_CODER_H
 
-#include "Abstractions/AbstractEncryption.h"
-#include "DES/DESKey.h"
+#include "Ciphers/Abstractions/AbstractEncryption.h"
+#include "Ciphers/DES/DESKey.h"
 
 namespace DESCipher{
     class DES : public AbstractEncryption{

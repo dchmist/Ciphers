@@ -1,4 +1,4 @@
-#include "DES/DES.h"
+#include "Ciphers/DES/DES.h"
 #include <algorithm>
 #include "ReturnTypes/EncryptionException.h"
 

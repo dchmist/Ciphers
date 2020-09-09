@@ -1,7 +1,7 @@
 #ifndef ENCRYPTOR_FACTORY_H
 #define ENCRYPTOR_FACTORY_H
 
-#include "Abstractions/AbstractEncryption.h"
+#include "Ciphers/Abstractions/AbstractEncryption.h"
 #include <memory>
 #include <map>
 

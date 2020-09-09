@@ -1,8 +1,7 @@
 #ifndef MINI_AES_KEY_H
 #define MINI_AES_KEY_H
 
-#include <cstdint>
-#include "Abstractions/AbstractKey.h"
+#include "Ciphers/Abstractions/AbstractKey.h"
 
 namespace MiniAESCipher{
     class MiniAESKey : public AbstractKey{

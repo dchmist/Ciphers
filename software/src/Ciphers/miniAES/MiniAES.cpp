@@ -1,6 +1,6 @@
-#include "miniAES/MiniAES.h"
-#include "miniAES/MiniAESSBoxes.h"
-#include "miniAES/MultiplierAES.h"
+#include "Ciphers/miniAES/MiniAES.h"
+#include "Ciphers/miniAES/MiniAESSBoxes.h"
+#include "Ciphers/miniAES/MultiplierAES.h"
 #include "ReturnTypes/EncryptionException.h"
 #include <memory>
 

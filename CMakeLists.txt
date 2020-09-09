@@ -5,7 +5,6 @@ add_definitions( "-Wall -g3 -pthread -std=c++17" )
 set(HOME_LOC ${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories(${HOME_LOC}/software/include)
-include_directories(${HOME_LOC}/software/include/Ciphers)
 
 add_subdirectory(software)
-#add_subdirectory(tests)
+

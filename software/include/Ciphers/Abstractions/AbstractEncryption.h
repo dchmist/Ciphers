@@ -1,7 +1,7 @@
 #ifndef ABSTRACT_ENCRYPTION_H
 #define ABSTRACT_ENCRYPTION_H
 
-#include "Abstractions/AbstractKey.h"
+#include "Ciphers/Abstractions/AbstractKey.h"
 #include <cstdint>
 #include <vector>
 #include <memory>

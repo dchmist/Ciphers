@@ -5,7 +5,6 @@ add_definitions( "-Wall -g3 -pthread -std=c++17" )
 set(test_dir ${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories(${test_dir}/deps/include)
-include_directories(${test_dir}/deps/include/Ciphers)
 link_directories(${test_dir}/deps/lib/Ciphers)
 link_directories(${test_dir}/deps/lib/gtest)
 

@@ -1,8 +1,8 @@
 #ifndef DES_KEY_H
 #define DES_KEY_H
 
+#include "Ciphers/Abstractions/AbstractKey.h"
 #include <bitset>
-#include "Abstractions/AbstractKey.h"
 
 namespace DESCipher{
     class DESKey : public AbstractKey{

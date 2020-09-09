@@ -1,7 +1,7 @@
 #include "EncryptorFactory.h"
-#include "miniAES/MiniAES.h"
-#include "Caesar/Caesar.h"
-#include "DES/DES.h"
+#include "Ciphers/miniAES/MiniAES.h"
+#include "Ciphers/Caesar/Caesar.h"
+#include "Ciphers/DES/DES.h"
 #include "ReturnTypes/EncryptionException.h"
 
 EncryptorFactory::EncryptorFactory()

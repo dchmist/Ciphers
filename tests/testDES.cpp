@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "DES/DES.h"
-#include "DES/DESKey.h"
+#include "Ciphers/DES/DES.h"
+#include "Ciphers/DES/DESKey.h"
 #include "DataConverter.h"
 #include "ReturnTypes/EncryptionException.h"
 #include <algorithm>

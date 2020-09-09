@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include "miniAES/MiniAES.h"
-#include "miniAES/MiniAESKey.h"
-#include "miniAES/MultiplierAES.h"
+#include "Ciphers/miniAES/MiniAES.h"
+#include "Ciphers/miniAES/MiniAESKey.h"
+#include "Ciphers/miniAES/MultiplierAES.h"
 #include "DataConverter.h"
 #include "ReturnTypes/EncryptionException.h"
 #include <algorithm>

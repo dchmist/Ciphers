@@ -1,5 +1,5 @@
-#include "miniAES/MiniAESKey.h"
-#include "miniAES/MiniAESSBoxes.h"
+#include "Ciphers/miniAES/MiniAESKey.h"
+#include "Ciphers/miniAES/MiniAESSBoxes.h"
 #include "ReturnTypes/EncryptionException.h"
 #include <bitset>
 #include <algorithm>

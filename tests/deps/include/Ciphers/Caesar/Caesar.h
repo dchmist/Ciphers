@@ -1,8 +1,8 @@
 #ifndef CAESAR_H
 #define CAESAR_H
 
-#include "Abstractions/AbstractEncryption.h"
-#include "Caesar/CaesarKey.h"
+#include "Ciphers/Abstractions/AbstractEncryption.h"
+#include "Ciphers/Caesar/CaesarKey.h"
 
 namespace CaesarCipher{
     class Caesar : public AbstractEncryption{

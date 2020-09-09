@@ -1,8 +1,8 @@
 #ifndef MINI_AES_H
 #define MINI_AES_H
 
-#include "Abstractions/AbstractEncryption.h"
-#include "miniAES/MiniAESKey.h"
+#include "Ciphers/Abstractions/AbstractEncryption.h"
+#include "Ciphers/miniAES/MiniAESKey.h"
 
 namespace MiniAESCipher{
     class MiniAES : public AbstractEncryption{
