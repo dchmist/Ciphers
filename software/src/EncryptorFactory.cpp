@@ -1,4 +1,4 @@
-#include "EncryptionFactory.h"
+#include "EncryptorFactory.h"
 #include "miniAES/MiniAES.h"
 #include "Caesar/Caesar.h"
 #include "DES/DES.h"

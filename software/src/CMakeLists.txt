@@ -14,7 +14,7 @@ add_library(des SHARED
 )
 add_library(encryptorFactory SHARED
         DataConverter.cpp
-        EncryptionFactory.cpp
+        EncryptorFactory.cpp
         ReturnTypes/EncryptionException.cpp
 )
 target_link_libraries(encryptorFactory
